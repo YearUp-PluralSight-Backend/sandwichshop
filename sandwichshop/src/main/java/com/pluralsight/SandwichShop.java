@@ -3,69 +3,66 @@ package com.pluralsight;
 import java.util.Scanner;
 
 /**
- * The SandwichShop Class provides a way to calculate the cost of sandwich
- * It implements the Scanner Object for user input
- * It has three methods; Main, promptForAge, promptForSandwichSize
+ * The SandwichShop Class provides a way to calculate the cost of a sandwich.
+ * It implements the Scanner Object for user input.
+ * It has three methods: main, promptForAge, and promptForSandwichSize.
  */
 public class SandwichShop {
-
 
     final private static Scanner scanner = new Scanner(System.in);
 
     /**
-     * get the base price of sandwich and discount based on their age and size of sandwich.
-     * calculate their cost by multiply base price with discount.
-     * @param args
+     * Main method that calculates the cost of a sandwich based on size and age discount.
+     * @param args command line arguments (unused)
      */
     public static void main(String[] args) {
-
 
         double sizeOfSandwich = promptForSandwichSize();
         double discount = promptForAge();
 
-        double total = sizeOfSandwich * discount;
-        System.out.println("The total of the cost for sandwich: " + total);
+        double total = discount == 0 ? sizeOfSandwich : sizeOfSandwich * discount;
+        System.out.println("The total cost of the sandwich is: $" + total);
     }
 
     /**
-     * ask user's age
-     * based on their age, determine the percentage of discount they will get.
-     * @return double
+     * Ask user's age and determine the percentage of discount based on their age.
+     * @return double representing the discount multiplier (1.0 means no discount)
      */
     private static double promptForAge() {
         System.out.println("How old are you?");
-        int age = scanner.nextInt();
-        double discount = 0;
+        int age = Integer.parseInt(scanner.nextLine().trim());
+        double discount = 1.0;
 
         if (age >= 65) {
-            discount = 0.8;
-        } else if (age <= 17 && age > 0) {
-            discount = 0.9;
+            discount = 0.8;  // 20% discount
+            System.out.println("You get a 20% discount!");
+        } else if (age <= 17) {
+            discount = 0.9;  // 10% discount
+            System.out.println("You get a 10% discount!");
         } else {
-            System.out.println("Based on your age, you don't have any discount.");
+            System.out.println("You don't qualify for a discount.");
         }
 
         return discount;
-
     }
 
     /**
-     *  get the user's option
-     *  based on their option (regular or large) to determine the price of sandwich
-     * @return double
+     * Get the user's option and determine the price of the sandwich based on the size.
+     * @return double representing the base price of the sandwich
      */
     private static double promptForSandwichSize() {
-
-        System.out.println("Would you like large size or regular size of sandwich?  ");
-        String option = scanner.nextLine();
         double basePrice = 0;
+        while (basePrice == 0) {
+            System.out.println("Would you like a large or regular sandwich?");
+            String option = scanner.nextLine().trim().toLowerCase();
 
-        if (option.toLowerCase().trim().equals("large")) {
-            basePrice = 5.45;
-        } else if (option.toLowerCase().trim().equals("regular")) {
-            basePrice = 8.95;
-        } else {
-            System.out.println("Please choose the either large or regular.");
+            if (option.equals("large")) {
+                basePrice = 8.95;
+            } else if (option.equals("regular")) {
+                basePrice = 5.45;
+            } else {
+                System.out.println("Invalid choice. Please select either 'large' or 'regular'.");
+            }
         }
 
         return basePrice;
